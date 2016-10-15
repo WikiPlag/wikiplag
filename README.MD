@@ -4,13 +4,28 @@
 
 Projektstudiumsaufgabe im SS16 an der HTW Berlin, betreut von Prof. Dr.-Ing. Hendrik Gärtner
 
-##Build
+## Aufbau
+*mongodb*, *forwardreferencetable*, *viewindex*, und *parser* sind Teile des Backends. Sie werdnen im den *sparkapp* projekt verwendet.
+
+das *webapp* projekt bildet das frontend ab.
+
+*similarity*, *analysisJob*, *stopwordfinder* sind teilprojekt für einzelne aufgaben gewesen, die aktuell nicht verwendet werden.
+
+## Build
 ```
 sbt package assembly
 ```
 Goal: package --> Webapp
 
 Goal: assembly --> Backend fat-jar
+
+### Artefakte
+
+Als Ergeniss des Bauprozesses sind folgende Artefakte wichtig: 
+
+sparkapp\target\scala-2.10\wikiplag_sparkapp.jar --> Frontend 
+
+webapp\target\scala-2.10\webapp_2.10-0.0.1.war --> Backend (Wikipediadatensatz -> MongoDB Einträge)
 
 ## Try it
 http://wikiplag.f4.htw-berlin.de/
