@@ -5,9 +5,9 @@
 Projektstudiumsaufgabe im SS16 an der HTW Berlin, betreut von Prof. Dr.-Ing. Hendrik Gärtner
 
 ## Aufbau
-*mongodb*, *forwardreferencetable*, *viewindex*, und *parser* sind Teile des Backends. Sie werdnen im den *sparkapp* projekt verwendet.
+*mongodb*, *forwardreferencetable*, *viewindex*, und *parser* sind Teil-Projekte. 
 
-das *webapp* projekt bildet das frontend ab.
+Sie werden im den *sparkapp* projekt als Backend verwendet und im *webapp* projekt als frontend.
 
 *similarity*, *analysisJob*, *stopwordfinder* sind teilprojekt für einzelne aufgaben gewesen, die aktuell nicht verwendet werden.
 
