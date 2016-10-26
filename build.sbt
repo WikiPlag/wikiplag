@@ -106,16 +106,6 @@ lazy val sparkApp = (project in file("sparkapp"))
     forwardreferencetable, viewindex, parser, mongodb
   )
 
-lazy val stopwordfinder = (project in file("stopwordfinder"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "stopwordfinder",
-    excludeFilter in unmanagedResources := "*",
-    libraryDependencies ++= Seq(
-       sparkCoreDep, sparkSQLDep
-    )
-  )
-
 val ScalatraVersion = "2.4.1"
 
 lazy val webApp = (project in file("webapp"))
