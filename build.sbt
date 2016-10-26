@@ -106,30 +106,6 @@ lazy val sparkApp = (project in file("sparkapp"))
     forwardreferencetable, viewindex, parser, mongodb
   )
 
-lazy val analysisJob = (project in file("analysisJob"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "AnalysisJob",
-    libraryDependencies ++= Seq(
-      sparkCoreDep, jobserver, config
-    ),
-    resolvers ++= Seq("Job Server Bintray" at "https://dl.bintray.com/spark-jobserver/maven"),
-    assemblySettings,
-    jarName in assembly := "analysisJob.jar"
-  )
-  .dependsOn(
-    mongodb, forwardreferencetable, viewindex, parser
-  )
-
-lazy val similarity = (project in file("similarity"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "Similarity",
-    excludeFilter in unmanagedResources := "*",
-    libraryDependencies ++= Seq(
-    )
-  )
-
 lazy val stopwordfinder = (project in file("stopwordfinder"))
   .settings(commonSettings: _*)
   .settings(
