@@ -1,5 +1,6 @@
 package de.htw.ai.wikiplag.mongodb.test
 
+import com.mongodb.casbah.Imports._
 import de.htw.ai.wikiplag.connection.MongoDBImpl
 
 /**
