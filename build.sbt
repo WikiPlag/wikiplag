@@ -47,6 +47,7 @@ lazy val commonSettings = Seq(
   organization := "HTW Berlin",
   name := "WikiPlag",
   version := "0.0.1",
+  scalacOptions ++= Seq("-encoding", "UTF-8"),
   scalaVersion := "2.10.4",
   libraryDependencies ++= testDependencies
 )
