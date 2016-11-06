@@ -1,6 +1,7 @@
 package com.wikiplag.webapp.models
 
 import com.wikiplag.webapp.Configuration
+import de.htw.ai.wikiplag.connection.MongoDBImpl
 import org.json4s._
 import org.json4s.JsonDSL._
 import org.json4s.jackson.JsonMethods._
@@ -10,7 +11,6 @@ import com.mongodb.casbah.Imports._
 import scala.collection.JavaConversions._
 import StringContext._
 import com.wikiplag.webapp.helpers.{InputAdaption, Parser}
-import de.htw.ai.wikiplag.connection.MongoDBImpl
 import de.htw.ai.wikiplag.forwardreferencetable.ForwardReferenceTableImp
 import de.htw.ai.wikiplag.viewindex.ViewIndexBuilderImp
 
