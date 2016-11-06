@@ -1,4 +1,5 @@
 import AssemblyKeys._
+import sbt.Keys._
 import sbtassembly.Plugin._
 
 import sbt._
@@ -10,13 +11,9 @@ import ScalateKeys._
 import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 
 /*
- * Dependencies
+    Dependencies
  */
 val wikiplag = "com.github.WikiPlag" %% "wikiplag_utils" % "-SNAPSHOT"
-
-/*
- * Test-Dependencies
- */
 val testDependencies = Seq(
   "org.slf4j" % "slf4j-simple" % "1.7.21" % "test",
   "junit" % "junit" % "4.11" % "test",
@@ -24,8 +21,14 @@ val testDependencies = Seq(
 )
 
 /*
- * Settings
+    Properties
  */
+val ScalatraVersion = "2.4.1"
+
+/*
+    Settings
+ */
+
 lazy val commonSettings = Seq(
   organization := "HTW Berlin",
   name := "WikiPlag",
@@ -35,14 +38,11 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= testDependencies
 )
 
-val ScalatraVersion = "2.4.1"
-
-lazy val webApp = (project in file("webapp"))
+lazy val root = (project in file("."))
   .settings(ScalatraPlugin.scalatraSettings: _*)
   .settings(scalateSettings: _*)
   .settings(commonSettings: _*)
   .settings(
-    name := "webapp",
     resolvers += Classpaths.typesafeReleases,
     resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
     resolvers += "jitpack" at "https://jitpack.io",
@@ -54,20 +54,20 @@ lazy val webApp = (project in file("webapp"))
       "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "compile;container",
       "javax.servlet" % "javax.servlet-api" % "3.1.0" % "container;provided",
       "org.scalatra" %% "scalatra-json" % ScalatraVersion,
-      "org.json4s"   %% "json4s-jackson" % "3.3.0",
+      "org.json4s" %% "json4s-jackson" % "3.3.0",
       "org.scalaj" %% "scalaj-http" % "2.3.0",
       "com.typesafe" % "config" % "1.3.0",
       "commons-codec" % "commons-codec" % "1.9",
       wikiplag
     ),
-    scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
+    scalateTemplateConfig in Compile <<= (sourceDirectory in Compile) { base =>
       Seq(
         TemplateConfig(
           base / "webapp" / "WEB-INF" / "templates",
-          Seq.empty,  /* default imports should be added here */
+          Seq.empty, /* default imports should be added here */
           Seq(
             Binding("context", "_root_.org.scalatra.scalate.ScalatraRenderContext", importMembers = true, isImplicit = true)
-          ),  /* add extra bindings here */
+          ), /* add extra bindings here */
           Some("templates")
         )
       )
