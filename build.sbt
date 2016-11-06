@@ -12,24 +12,7 @@ import com.typesafe.sbt.packager.archetypes.JavaAppPackaging
 /*
  * Dependencies
  */
-val parserComb = "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
-val mongoDBDriverDep = "org.mongodb" %% "casbah" % "3.1.1"
-val sparkCoreDep = "org.apache.spark" %% "spark-core" % "1.3.0" % "provided"
-val sparkSQLDep = "org.apache.spark" %% "spark-sql" % "1.3.0" % "provided"
-val sparkDataBricksDep = "com.databricks" % "spark-xml_2.10" % "0.3.3"
-val unbescaped = "org.unbescape" % "unbescape" % "1.1.3.RELEASE"
-val commonsCodec = "commons-codec" % "commons-codec" % "1.9"
-val jobserver = "spark.jobserver" %% "job-server-api" % "0.6.2" % "provided"
-val config = "com.typesafe" % "config" % "1.3.0"
-val hadoopClient = ("org.apache.hadoop" % "hadoop-client" % "2.2.0")
-  .exclude("commons-logging", "commons-logging")
-  .exclude("commons-beanutils", "commons-beanutils-core")
-  .exclude("commons-collections", "commons-collections")
-val mongoDBHadoopCore = ("org.mongodb.mongo-hadoop" % "mongo-hadoop-core" % "1.5.1")
-  .exclude("commons-logging", "commons-logging")
-  .exclude("commons-beanutils", "commons-beanutils-core")
-  .exclude("commons-collections", "commons-collections")
-
+val wikiplag = "com.github.WikiPlag" %% "wikiplag_utils" % "-SNAPSHOT"
 
 /*
  * Test-Dependencies
@@ -48,64 +31,9 @@ lazy val commonSettings = Seq(
   name := "WikiPlag",
   version := "0.0.1",
   scalacOptions ++= Seq("-encoding", "UTF-8"),
-  scalaVersion := "2.10.4",
+  scalaVersion := "2.10.6",
   libraryDependencies ++= testDependencies
 )
-
-/*
- * Modules
- */
-lazy val mongodb = (project in file("mongodb"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "MongoDBConnection",
-    libraryDependencies ++= Seq(
-      mongoDBDriverDep
-    )
-  )
-
-lazy val forwardreferencetable = (project in file("forwardreferencetable"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "forwardreferencetable",
-    libraryDependencies ++= Seq(
-      commonsCodec
-    )
-  )
-
-lazy val viewindex = (project in file("viewindex"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "ViewIndex",
-    libraryDependencies ++= Seq(
-    )
-  )
-
-lazy val parser = (project in file("parser"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "Parser",
-    excludeFilter in unmanagedResources := "*",
-    libraryDependencies ++= Seq(
-      unbescaped
-    )
-  )
-  
-lazy val sparkApp = (project in file("sparkapp"))
-  .settings(commonSettings: _*)
-  .settings(
-    name := "SparkApp",
-    libraryDependencies ++= Seq(
-      sparkCoreDep, sparkSQLDep, sparkDataBricksDep //, mongoDBHadoopCore, hadoopClient
-    )
-  ).settings(
-    assemblySettings,
-    jarName in assembly := "wikiplag_sparkapp.jar",
-    assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
-  )
-  .dependsOn(
-    forwardreferencetable, viewindex, parser, mongodb
-  )
 
 val ScalatraVersion = "2.4.1"
 
@@ -117,6 +45,7 @@ lazy val webApp = (project in file("webapp"))
     name := "webapp",
     resolvers += Classpaths.typesafeReleases,
     resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
+    resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       "org.scalatra" %% "scalatra" % ScalatraVersion,
       "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
@@ -128,7 +57,8 @@ lazy val webApp = (project in file("webapp"))
       "org.json4s"   %% "json4s-jackson" % "3.3.0",
       "org.scalaj" %% "scalaj-http" % "2.3.0",
       "com.typesafe" % "config" % "1.3.0",
-      "commons-codec" % "commons-codec" % "1.9"
+      "commons-codec" % "commons-codec" % "1.9",
+      wikiplag
     ),
     scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
       Seq(
@@ -142,12 +72,6 @@ lazy val webApp = (project in file("webapp"))
         )
       )
     }
-  )
-  .dependsOn(
-    mongodb,
-    forwardreferencetable,
-    viewindex,
-    parser
   )
   .enablePlugins(JettyPlugin)
   .enablePlugins(JavaAppPackaging)
