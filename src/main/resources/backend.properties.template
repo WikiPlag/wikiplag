@@ -1,0 +1,6 @@
+database.host = ???
+database.port = ???
+database.user = ???
+database.password = ???
+database.database = ???
+database.collection = wiki_idx_test
