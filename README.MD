@@ -1,13 +1,72 @@
-# WikiPlag - Plattform zur Erkennung von Wikpediaplagiaten
+# WikiPlag REST API
 
-## Übersicht
+provided REST Interface to access the plagiarism and the database 
 
-Projektstudiumsaufgabe im SS16 an der HTW Berlin, betraut von Prof. Dr.-Ing. Hendrik Gärtner
+## Build and Run local
 
-## try it out
-http://wikiplag.f4.htw-berlin.de/
+```bash
+./sbt
+> jetty:start
+> browse
+```
 
-## Links
-[Redmine](https://studi.f4.htw-berlin.de/redmine/projects/0-wikiplag) 
+## Build Artifact
+```bash
+sbt clean assembly
+```
 
-[Aufgabe](http://puck.f4.htw-berlin.de/hgaertner/veranstaltungen/projektstudium/ss-2016/)
+## Run
+```bash
+java -jar wikiplag_backend.jar
+```
+Browse to <localhost:8080/>
+
+## Routes
+
+##### GET /
+test page
+
+##### GET /wikiplag/document/:id
+Gibt den Text eines Wikipediaartikels zurück.
+
+Response Body
+```json
+{
+  "doc_id": 1337,
+  "title": "title",
+  "text": "text..." 
+}
+```
+
+##### POST /wikiplag/analyse
+Führt eine Plagiatsanalyse durch und gibt eine Trefferliste zurück.
+
+Request Body
+```json
+{
+  "text": "text text text..." 
+}
+```
+
+Response Body
+```json
+{
+  "hits": [
+    {
+      "title": "title",
+      "doc_id": 1337,
+      "score": 100,
+      "preview": "word <em>text1</em> word 2",
+      "origin": "text <em>text1</em> text3 text2 text1" 
+    },
+    {
+      "title": "title 2",
+      "doc_id": 1338,
+      "score": 100,
+      "preview": "word <em>text1</em> word 2",
+      "origin": "text <em>text1</em> text3 text2 text1" 
+    },
+    ...
+  ]
+}
+```

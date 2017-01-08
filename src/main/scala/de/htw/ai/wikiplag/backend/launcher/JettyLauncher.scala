@@ -5,6 +5,12 @@ import org.eclipse.jetty.servlet.DefaultServlet
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 
+/**
+  * Object to make the Servlet runnable as jar file
+  *
+  * @see http://www.scalatra.org/2.4/guides/deployment/standalone.html
+  *      Created by Max on 08.01.2017.
+  */
 object JettyLauncher {
 
 	def main(args: Array[String]) {
@@ -15,7 +21,7 @@ object JettyLauncher {
 		context.setContextPath("/")
 		context.setResourceBase("src/main/webapp")
 
-		context.setEventListeners(Array(new ScalatraListener))
+		context.addEventListener(new ScalatraListener)
 		context.addServlet(classOf[DefaultServlet], "/")
 
 		server.setHandler(context)
@@ -23,4 +29,5 @@ object JettyLauncher {
 		server.start()
 		server.join()
 	}
+
 }

@@ -10,7 +10,7 @@ import sbt._
  * Dependencies
  */
 val wikiplag = "com.github.WikiPlag" % "wikiplag_utils" % "-SNAPSHOT"
-val analyzer = "com.github.WikiPlag" % "analyzer" % "algoonly-SNAPSHOT"
+val analyzer = "com.github.WikiPlag" % "analyzer" % "max_test-SNAPSHOT"
 val testDependencies = Seq(
 	"org.slf4j" % "slf4j-simple" % "1.7.21" % "test",
 	"junit" % "junit" % "4.11" % "test",
@@ -34,6 +34,8 @@ lazy val commonSettings = Seq(
 	libraryDependencies ++= testDependencies
 )
 
+unmanagedBase <<= baseDirectory { base => base / "libs" }
+
 lazy val root = (project in file("."))
 		.settings(ScalatraPlugin.scalatraSettings: _*)
 		.settings(scalateSettings: _*)
@@ -53,9 +55,9 @@ lazy val root = (project in file("."))
 				"org.json4s" %% "json4s-jackson" % "3.3.0",
 				"org.scalaj" %% "scalaj-http" % "2.3.0",
 				"com.typesafe" % "config" % "1.3.0",
-				"commons-codec" % "commons-codec" % "1.9",
-				wikiplag,
-				analyzer
+//				"commons-codec" % "commons-codec" % "1.9",
+				"org.apache.spark" %% "spark-core" % "1.5.0" % "provided"
+//				"org.apache.spark" %% "spark-sql" % "1.5.0"
 			),
 			scalateTemplateConfig in Compile <<= (sourceDirectory in Compile) { base =>
 				Seq(
@@ -72,4 +74,3 @@ lazy val root = (project in file("."))
 		)
 		.enablePlugins(JettyPlugin)
 		.enablePlugins(JavaAppPackaging)
-

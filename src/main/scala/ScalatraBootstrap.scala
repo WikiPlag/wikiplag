@@ -1,7 +1,6 @@
-package de.htw.ai.wikiplag.backend
-
 import javax.servlet.ServletContext
 
+import de.htw.ai.wikiplag.backend.WikiplagWebServlet
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle {

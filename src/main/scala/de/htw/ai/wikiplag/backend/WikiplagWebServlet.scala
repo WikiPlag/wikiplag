@@ -1,7 +1,8 @@
 package de.htw.ai.wikiplag.backend
 
 import com.typesafe.config.ConfigFactory
-import de.htw.ai.wikiplag.data.MongoDbClient
+import de.htw.ai.wikiplag.data.{InverseIndexBuilderImpl, MongoDbClient}
+import de.htw.ai.wikiplag.textProcessing.plagiarism.PlagiarismFinder
 import org.apache.spark.{SparkConf, SparkContext}
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
@@ -16,15 +17,20 @@ class WikiplagWebServlet extends WikiplagWebAppStack with ScalateSupport with Ja
 	override def init(): Unit = {
 		val config = ConfigFactory.load("backend.properties")
 
-		val sparkMaster = config.getString("spark.master")
-		val scConfig = new SparkConf()
-		sparkContext = new SparkContext(sparkMaster, "WikiplagBackend", scConfig)
+		val conf = new SparkConf()
+				.setMaster(config.getString("spark.master"))
+				.setAppName("WikiplagBackend")
+				.set("spark.executor.memory", "4g")
+				.set("spark.storage.memoryFraction", "0.8")
+				.set("spark.driver.memory", "2g")
 
-		val host = config.getString("database.host")
-		val port = config.getInt("database.port")
-		val username = config.getString("database.user")
-		val database = config.getString("database.database")
-		val password = config.getString("database.password")
+		sparkContext = new SparkContext(conf)
+
+		val host = config.getString("mongo.host")
+		val port = config.getInt("mongo.port")
+		val username = config.getString("mongo.user")
+		val database = config.getString("mongo.database")
+		val password = config.getString("mongo.password")
 
 		mongoClient = MongoDbClient(sparkContext, host, port, username, database, password)
 	}
@@ -35,57 +41,75 @@ class WikiplagWebServlet extends WikiplagWebAppStack with ScalateSupport with Ja
 	}
 
 	/*
+	 * Test Path
+	 */
+	get("/") {
+		println("get /")
+		"Hallo Wikiplag REST Service"
+	}
+
+	/*
 	 * document path
 	 */
 
 	get("/wikiplag/document/:id") {
-		val wikiId = params("id").asInstanceOf[Long]
-		val document = mongoClient.getDocument(wikiId)
-		document
-	}
+		val wikiId = params("id").toLong
+		println(s"get /wikiplag/document/:id with $wikiId")
 
-//	{
-//		"doc_id": 1337,
-//		"title": "title",
-//		"text": "text..."
-//	}
+		val document = mongoClient.getDocument(wikiId)
+		if (document != null) {
+			document
+		} else {
+			halt(404)
+		}
+
+	}
 
 	/*
 	 * plagiarism path
 	 */
 
 	post("/wikiplag/analyse") {
-		contentType = formats("json")
+		println("post /wikiplag/analyse")
+		val inputText = params.getOrElse("text", halt(400))
+		println(s"post /wikiplag/analyse with $inputText")
 
-		val text = params("text")
-		val x = new PlagiarismFinder().apply(sparkContext, text)
-		x
+		if (inputText != null && !inputText.isEmpty) {
+			// TODO: how to use PlagiarismFinder
+			val keySet = InverseIndexBuilderImpl.buildIndexKeySet(inputText)
+			val index = mongoClient.getInvIndexRDD(keySet)
+			val result = PlagiarismFinder.checkForPlagiarism(index, sparkContext, List("Schokolade", "Rausch"), 0.70, 3, 7, 10)
+
+			Map("hits" -> result)
+		} else {
+			halt(400)
+		}
 	}
 
-//	{
-//		"hits": [
-//		{
-//			"title": "title",
-//			"doc_id": 1337,
-//			"score": 100,
-//			"preview": "word <em>text1</em> word 2",
-//			"origin": "text <em>text1</em> text3 text2 text1"
-//		},
-//		{
-//			"title": "title 2",
-//			"doc_id": 1338,
-//			"score": 100,
-//			"preview": "word <em>text1</em> word 2",
-//			"origin": "text <em>text1</em> text3 text2 text1"
-//		},
-//		{
-//			"title": "title 3",
-//			"doc_id": 1339,
-//			"score": 100,
-//			"preview": "word <em>text1</em> word 2",
-//			"origin": "text <em>text1</em> text3 text2 text1"
-//		}
-//		]
-//	}
+	//	{
+	//		"hits": [
+	//		{
+	//			"title": "title",
+	//			"doc_id": 1337,
+	//			"score": 100,
+	//			"preview": "word <em>text1</em> word 2",
+	//			"origin": "text <em>text1</em> text3 text2 text1"
+	//		},
+	//		{
+	//			"title": "title 2",
+	//			"doc_id": 1338,
+	//			"score": 100,
+	//			"preview": "word <em>text1</em> word 2",
+	//			"origin": "text <em>text1</em> text3 text2 text1"
+	//		},
+	//		{
+	//			"title": "title 3",
+	//			"doc_id": 1339,
+	//			"score": 100,
+	//			"preview": "word <em>text1</em> word 2",
+	//			"origin": "text <em>text1</em> text3 text2 text1"
+	//		}
+	//		]
+	//	}
 
 }
