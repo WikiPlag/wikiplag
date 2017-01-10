@@ -75,11 +75,9 @@ class WikiplagWebServlet extends WikiplagWebAppStack with ScalateSupport with Ja
 		println(s"post /wikiplag/analyse with $inputText")
 
 		if (inputText != null && !inputText.isEmpty) {
-			// TODO: how to use PlagiarismFinder
 			val keySet = InverseIndexBuilderImpl.buildIndexKeySet(inputText)
 			val index = mongoClient.getInvIndexRDD(keySet)
 			val result = new PlagiarismFinder().apply(sparkContext, inputText)
-
 			Map("hits" -> result)
 		} else {
 			halt(400)

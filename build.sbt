@@ -9,8 +9,6 @@ import sbt._
 /*
  * Dependencies
  */
-val wikiplag_utils = "com.github.WikiPlag" % "wikiplag_utils" % "-SNAPSHOT"
-val analyzer = "com.github.WikiPlag" % "analyzer" % "-SNAPSHOT"
 val testDependencies = Seq(
 	"org.slf4j" % "slf4j-simple" % "1.7.21" % "test",
 	"junit" % "junit" % "4.11" % "test",
@@ -30,11 +28,16 @@ lazy val commonSettings = Seq(
 	name := "WikiPlag",
 	version := "0.0.1",
 	scalacOptions ++= Seq("-encoding", "UTF-8"),
-	scalaVersion := "2.10.6",
+	scalaVersion := "2.10.4",
 	libraryDependencies ++= testDependencies
 )
 
 unmanagedBase <<= baseDirectory { base => base / "libs" }
+
+assemblyMergeStrategy in assembly := {
+	case PathList("META-INF", xs@_*) => MergeStrategy.discard
+	case x => MergeStrategy.first
+}
 
 lazy val root = (project in file("."))
 		.settings(ScalatraPlugin.scalatraSettings: _*)
@@ -45,6 +48,7 @@ lazy val root = (project in file("."))
 			resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
 			resolvers += "jitpack" at "https://jitpack.io",
 			libraryDependencies ++= Seq(
+				"org.mongodb" %% "casbah" % "3.1.1",
 				"org.scalatra" %% "scalatra" % ScalatraVersion,
 				"org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
 				"org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
@@ -54,9 +58,20 @@ lazy val root = (project in file("."))
 				"org.scalatra" %% "scalatra-json" % ScalatraVersion,
 				"org.json4s" %% "json4s-jackson" % "3.3.0",
 				"org.scalaj" %% "scalaj-http" % "2.3.0",
-				"com.typesafe" % "config" % "1.3.0",
-				"org.apache.spark" %% "spark-core" % "1.5.0" % "provided",
-				wikiplag_utils
+				"com.typesafe" % "config" % "1.2.1",
+				"commons-codec" % "commons-codec" % "1.9" % "provided",
+				// xxx
+				("org.apache.spark" %% "spark-core" % "1.5.0")
+						.exclude("org.eclipse.jetty.orbit", "javax.servlet")
+						.exclude("org.eclipse.jetty.orbit", "javax.transaction")
+						.exclude("org.eclipse.jetty.orbit", "javax.mail")
+						.exclude("org.eclipse.jetty.orbit", "javax.activation")
+						.exclude("commons-beanutils", "commons-beanutils-core")
+						.exclude("commons-collections", "commons-collections")
+						.exclude("com.esotericsoftware.minlog", "minlog")
+				// 'sbt package' with these project and place them into at /libs
+				//				"com.github.WikiPlag" % "analyzer" % "-SNAPSHOT",
+				//				"com.github.WikiPlag" % "wikiplag_utils" % "-SNAPSHOT"
 			),
 			scalateTemplateConfig in Compile <<= (sourceDirectory in Compile) { base =>
 				Seq(
