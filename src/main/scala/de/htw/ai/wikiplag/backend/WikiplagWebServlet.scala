@@ -78,7 +78,7 @@ class WikiplagWebServlet extends WikiplagWebAppStack with ScalateSupport with Ja
 			// TODO: how to use PlagiarismFinder
 			val keySet = InverseIndexBuilderImpl.buildIndexKeySet(inputText)
 			val index = mongoClient.getInvIndexRDD(keySet)
-			val result = PlagiarismFinder.checkForPlagiarism(index, sparkContext, List("Schokolade", "Rausch"), 0.70, 3, 7, 10)
+			val result = new PlagiarismFinder().apply(sparkContext, inputText)
 
 			Map("hits" -> result)
 		} else {
