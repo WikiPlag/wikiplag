@@ -57,22 +57,39 @@ Request Body
 Response Body
 ```json
 {
-  "hits": [
+  "tagged_input_text": "Das ist ein tolles <span class=\"input_plag\" id=0>Plagiat. Bla bla.</span> Hier geht <span class=\"input_plag\" id=1>der Text</span> weiter.",
+  "plags": [
     {
-      "title": "title",
-      "doc_id": 1337,
-      "score": 100,
-      "preview": "word <em>text1</em> word 2",
-      "origin": "text <em>text1</em> text3 text2 text1" 
+      "id": 0,
+      "wiki_excerpts": [
+        {
+          "title": "Hund",
+          "id": 4,
+          "start": 5,
+          "end": 7,
+          "excerpt": "[...] Test Test Bla Test Blubb <span class=\"wiki_plag\">Plagiat. Bla bla.</span> Hund Bla Test Bellen Blubb [...]" 
+        },
+        {
+          "title": "Katze",
+          "id": 9,
+          "start": 20,
+          "end": 22,
+          "excerpt": "[...] Katze Bla Test Miau Blubb <span class=\"wiki_plag\">Plagiat. Bla bla.</span> Test Test Bla Test Blubb [...]" 
+        }
+      ]
     },
     {
-      "title": "title 2",
-      "doc_id": 1338,
-      "score": 100,
-      "preview": "word <em>text1</em> word 2",
-      "origin": "text <em>text1</em> text3 text2 text1" 
-    },
-    ...
+      "id": 1,
+      "wiki_excerpts": [
+        {
+          "title": "Giraffe",
+          "id": 201,
+          "start": 11,
+          "end": 12,
+          "excerpt": "[...] Test Test Bla Test Blubb <span class=\"wiki_plag\">der Text</span> Hund Bla Test Gelb Blubb [...]" 
+        }
+      ]
+    }
   ]
 }
 ```
