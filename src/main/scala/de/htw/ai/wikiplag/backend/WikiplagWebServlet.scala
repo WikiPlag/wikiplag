@@ -84,30 +84,12 @@ class WikiplagWebServlet extends WikiplagWebAppStack with ScalateSupport with Ja
 		}
 	}
 
-	//	{
-	//		"hits": [
-	//		{
-	//			"title": "title",
-	//			"doc_id": 1337,
-	//			"score": 100,
-	//			"preview": "word <em>text1</em> word 2",
-	//			"origin": "text <em>text1</em> text3 text2 text1"
-	//		},
-	//		{
-	//			"title": "title 2",
-	//			"doc_id": 1338,
-	//			"score": 100,
-	//			"preview": "word <em>text1</em> word 2",
-	//			"origin": "text <em>text1</em> text3 text2 text1"
-	//		},
-	//		{
-	//			"title": "title 3",
-	//			"doc_id": 1339,
-	//			"score": 100,
-	//			"preview": "word <em>text1</em> word 2",
-	//			"origin": "text <em>text1</em> text3 text2 text1"
-	//		}
-	//		]
-	//	}
+	// 1 Finder rufen
+	// 2 title / text für id holen
+	// 3 span tags einbauen (Inputtext und pro Treffer (excerpt))
+	// überlappende start / ende positionen beachten
+	// ~5 Wörter danach und vor dem Artikel [...]
+	// profit
+
 
 }
