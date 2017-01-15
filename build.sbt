@@ -60,20 +60,22 @@ lazy val root = (project in file("."))
 				"org.scalaj" %% "scalaj-http" % "2.3.0",
 				"com.typesafe" % "config" % "1.2.1",
 				"commons-codec" % "commons-codec" % "1.9" % "provided",
-				// xxx
-				"org.apache.spark" %% "spark-core" % "1.5.0" % "provided"
-				//				("org.apache.spark" %% "spark-core" % "1.5.0")
-//						.exclude("org.eclipse.jetty.orbit", "javax.servlet")
-//						.exclude("org.eclipse.jetty.orbit", "javax.transaction")
-//						.exclude("org.eclipse.jetty.orbit", "javax.mail")
-//						.exclude("org.eclipse.jetty.orbit", "javax.activation")
-//						.exclude("commons-beanutils", "commons-beanutils-core")
-//						.exclude("commons-collections", "commons-collections")
-//						.exclude("com.esotericsoftware.minlog", "minlog")
+//				"org.apache.spark" %% "spark-core" % "1.5.0" % "provided"
+				("org.apache.spark" %% "spark-core" % "1.5.0")
+						.exclude("org.eclipse.jetty.orbit", "javax.servlet")
+						.exclude("org.eclipse.jetty.orbit", "javax.transaction")
+						.exclude("org.eclipse.jetty.orbit", "javax.mail")
+						.exclude("org.eclipse.jetty.orbit", "javax.activation")
+						.exclude("commons-beanutils", "commons-beanutils-core")
+						.exclude("commons-collections", "commons-collections")
+						.exclude("com.esotericsoftware.minlog", "minlog")
 //				// 'sbt package' with these project and place them into at /libs
 				//				"com.github.WikiPlag" % "analyzer" % "-SNAPSHOT",
 				//				"com.github.WikiPlag" % "wikiplag_utils" % "-SNAPSHOT"
 			),
+			// https://github.com/FasterXML/jackson-module-scala/issues/214
+			dependencyOverrides += "com.fasterxml.jackson.module" % "jackson-module-scala_2.10" % "2.4.4",
+			dependencyOverrides += "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.4",
 			scalateTemplateConfig in Compile <<= (sourceDirectory in Compile) { base =>
 				Seq(
 					TemplateConfig(

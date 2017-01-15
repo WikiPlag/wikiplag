@@ -57,7 +57,7 @@ Request Body
 Response Body
 ```json
 {
-  "tagged_input_text": "Das ist ein tolles <span class=\"input_plag\" id=0>Plagiat. Bla bla.</span> Hier geht <span class=\"input_plag\" id=1>der Text</span> weiter.",
+  "tagged_input_text": "Das ist ein tolles <span class=\"input_plag\" id=\"0\">Plagiat. Bla bla.</span> Hier geht <span class=\"input_plag\" id=\"1\">der Text</span> weiter.",
   "plags": [
     {
       "id": 0,
