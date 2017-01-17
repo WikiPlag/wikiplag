@@ -89,8 +89,11 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 //			println(result.size)
 			val plags = result.map(x => {
 				val wikiId = x._1._2
-				val document = documentCache.getOrElse(wikiId, mongoClient.getDocument(wikiId))
-				documentCache(wikiId) = document
+				val document = documentCache.getOrElse(wikiId, {
+					val doc = mongoClient.getDocument(wikiId)
+					documentCache(wikiId) = doc
+					doc
+				})
 
 				documentTextBuilder.clear()
 				documentTextBuilder.append(document.text)
