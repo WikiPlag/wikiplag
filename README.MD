@@ -16,16 +16,9 @@ sbt clean assembly
 ```
 
 ## Run
-https://spark.apache.org/docs/latest/quick-start.html
-
-$ YOUR_SPARK_HOME/bin/spark-submit \
-  --class "SimpleApp" \
-  --master local[4] \
-  target/scala-2.11/simple-project_2.11-1.0.jar
 ```bash
-java -jar wikiplag_backend.jar
+spark-submit WikiPlag-assembly-0.0.1.jar
 ```
-Browse to <localhost:8080/>
 
 ## Routes
 

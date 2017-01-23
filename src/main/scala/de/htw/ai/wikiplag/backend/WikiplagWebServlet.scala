@@ -17,7 +17,7 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 	private var sparkContext: SparkContext = _
 	private var mongoClient: MongoDbClient = _
 	private val documentCache = mutable.Map[Long, Document]()
-	private val SlidingSize = 25
+	private val SlidingSize = 30
 
 	override def init(): Unit = {
 		val config = ConfigFactory.load("backend.properties")
@@ -85,14 +85,8 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 			//           1. Position im Input
 			//           2. WikiId
 			//			 3. Position im Artikel
-			val result: List[((InPos, ID, WikPos), (InPos, ID, WikPos), Double)] = new PlagiarismFinder().apply(sparkContext, inputText)
-			//			val oos = new ObjectOutputStream(new FileOutputStream("result"))
-			//			oos.writeObject(result)
-			//			oos.close()
-
-			//			val ois = new ObjectInputStream(new FileInputStream("result"))
-			//			val result = ois.readObject().asInstanceOf[List[((InPos, ID, WikPos), (InPos, ID, WikPos), Double)]]
-			//			ois.close()
+			val result = new PlagiarismFinder().apply(sparkContext, inputText)
+//			println(mongoClient.getInvIndex("informatik"))
 
 			val documentTextBuilder = StringBuilder.newBuilder
 			val plags = result
