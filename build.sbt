@@ -34,10 +34,6 @@ lazy val commonSettings = Seq(
 
 unmanagedBase <<= baseDirectory { base => base / "libs" }
 
-//assemblyMergeStrategy in assembly := {
-//	case PathList("META-INF", xs@_*) => MergeStrategy.discard
-//	case x => MergeStrategy.first
-//}
 val meta = """META.INF(.)*""".r
 assemblyMergeStrategy in assembly := {
 	case PathList("javax", "servlet", xs @ _*) => MergeStrategy.first

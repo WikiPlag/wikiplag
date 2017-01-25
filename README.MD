@@ -17,7 +17,8 @@ sbt clean assembly
 
 ## Run
 ```bash
-scala WikiPlag-assembly-0.0.1.jar
+java -jar WikiPlag-assembly-0.0.1_local.jar 2>&1 > wikiplag.log &
+disown
 ```
 
 ## Routes
