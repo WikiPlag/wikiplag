@@ -84,8 +84,6 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 			//           2. WikiId
 			//			 3. Position im Artikel
 			val result = new PlagiarismFinder().apply(sparkContext, inputText)
-			//			println(mongoClient.getInvIndex("informatik"))
-
 			val documentTextBuilder = StringBuilder.newBuilder
 			val plags = result
 					.groupBy(x => x._1._1) // group by start pos
@@ -97,6 +95,7 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 					val endTextPos = y._2._3
 
 					val document = documentCache.getOrElse(wikiId, {
+						println(s"get document with id: $wikiId")
 						val doc = mongoClient.getDocument(wikiId)
 						documentCache(wikiId) = doc
 						doc
