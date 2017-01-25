@@ -62,13 +62,13 @@ lazy val root = (project in file("."))
 				"commons-codec" % "commons-codec" % "1.9" % "provided",
 //				"org.apache.spark" %% "spark-core" % "1.5.0" % "provided"
 				("org.apache.spark" %% "spark-core" % "1.5.0")
-						.exclude("org.eclipse.jetty.orbit", "javax.servlet")
-						.exclude("org.eclipse.jetty.orbit", "javax.transaction")
-						.exclude("org.eclipse.jetty.orbit", "javax.mail")
-						.exclude("org.eclipse.jetty.orbit", "javax.activation")
-						.exclude("commons-beanutils", "commons-beanutils-core")
-						.exclude("commons-collections", "commons-collections")
-						.exclude("com.esotericsoftware.minlog", "minlog")
+//						.exclude("org.eclipse.jetty.orbit", "javax.servlet")
+//						.exclude("org.eclipse.jetty.orbit", "javax.transaction")
+//						.exclude("org.eclipse.jetty.orbit", "javax.mail")
+//						.exclude("org.eclipse.jetty.orbit", "javax.activation")
+//						.exclude("commons-beanutils", "commons-beanutils-core")
+//						.exclude("commons-collections", "commons-collections")
+//						.exclude("com.esotericsoftware.minlog", "minlog")
 //				// 'sbt package' with these project and place them into at /libs
 				//				"com.github.WikiPlag" % "analyzer" % "-SNAPSHOT",
 				//				"com.github.WikiPlag" % "wikiplag_utils" % "-SNAPSHOT"

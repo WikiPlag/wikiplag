@@ -17,7 +17,7 @@ sbt clean assembly
 
 ## Run
 ```bash
-spark-submit WikiPlag-assembly-0.0.1.jar
+scala WikiPlag-assembly-0.0.1.jar
 ```
 
 ## Routes
