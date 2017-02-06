@@ -1,5 +1,7 @@
 package de.htw.ai.wikiplag.backend
 
+import java.io.File
+
 import com.typesafe.config.ConfigFactory
 import de.htw.ai.wikiplag.data.MongoDbClient
 import de.htw.ai.wikiplag.model.Document
@@ -13,6 +15,7 @@ import scala.collection.mutable
 class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 	protected implicit val jsonFormats: Formats = DefaultFormats
 
+	private val separator: String = System.getProperty("file.separator")
 	private var sparkContext: SparkContext = _
 	private var mongoClient: MongoDbClient = _
 	private val documentCache = mutable.Map[Long, Document]()
@@ -48,7 +51,8 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 	 */
 	get("/") {
 		println("get /")
-		"Hallo Wikiplag REST Service"
+		val indexHtmlPath = System.getProperty("user.home") + separator + "public_html" + separator + "index.html"
+		new File(indexHtmlPath)
 	}
 
 	/*

@@ -24,7 +24,7 @@ disown
 ## Routes
 
 ##### GET /
-test page
+Gibt die Datei _/home/$USER/public_html/index.html_ zurück
 
 ##### GET /wikiplag/document/:id
 Gibt den Text eines Wikipediaartikels zurück.
