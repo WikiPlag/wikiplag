@@ -51,6 +51,8 @@ class WikiplagWebServlet extends WikiplagWebAppStack with JacksonJsonSupport {
 	 */
 	get("/") {
 		println("get /")
+		contentType = "text/html"
+
 		val indexHtmlPath = System.getProperty("user.home") + separator + "public_html" + separator + "index.html"
 		new File(indexHtmlPath)
 	}
